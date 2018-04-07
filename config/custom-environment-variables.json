@@ -1,0 +1,5 @@
+{
+  "server": {
+    "port": "PODCASTEO_SERVER_PORT"
+  }
+}
