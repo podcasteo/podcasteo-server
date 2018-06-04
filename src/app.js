@@ -4,12 +4,16 @@ import bodyParser from 'body-parser'
 import compression from 'compression'
 import config from 'config'
 import express from 'express'
-import queryParser from 'express-query-int'
 
 import services from 'services'
 
 const packageJson = require(`${process.cwd()}/package.json`)// eslint-disable-line import/no-dynamic-require
 const app = express()
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+  extended: false,
+}))
 
 app.disable('x-powered-by')
 
@@ -19,9 +23,6 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   next()
 })
-
-app.use(bodyParser.json())
-app.use(queryParser())
 
 app.use(compression())
 
