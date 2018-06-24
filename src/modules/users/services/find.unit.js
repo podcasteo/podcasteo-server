@@ -12,7 +12,7 @@ import userFixture from 'modules/users/fixtures/user'
 
 chai.use(sinonChai)
 
-describe('(User) find ::', () => {
+describe('(Users) find ::', () => {
   let localSandbox
   let findStub
 
@@ -30,14 +30,17 @@ describe('(User) find ::', () => {
   })
 
   it('should find user', () => {
-    findStub.resolves([
-      userFixture,
-    ])
+    findStub.resolves({
+      totalCount: 1,
+      data: [
+        userFixture,
+      ],
+    })
 
     return find()
       .then((result) => {
         sinon.assert.calledOnce(findStub)
-        expect(result).to.be.an('array').that.includes(userFixture)
+        expect(result.data).to.be.an('array').that.includes(userFixture)
       })
   })
 })

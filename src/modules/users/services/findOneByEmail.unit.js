@@ -6,19 +6,19 @@ import sinon, {
 } from 'sinon'
 import sinonChai from 'sinon-chai'
 
-import findById from 'modules/users/services/findById'
+import findOneByEmail from 'modules/users/services/findOneByEmail'
 import client from 'modules/users/client'
 import userFixture from 'modules/users/fixtures/user'
 
 chai.use(sinonChai)
 
-describe('(User) findById ::', () => {
+describe('(Users) findOneByEmail ::', () => {
   let localSandbox
-  let findByIdStub
+  let findOneByEmailStub
 
   beforeEach(() => {
     localSandbox = sandbox.create()
-    findByIdStub = localSandbox.stub(client, 'findById')
+    findOneByEmailStub = localSandbox.stub(client, 'findOneByEmail')
   })
 
   afterEach(() => {
@@ -26,25 +26,25 @@ describe('(User) findById ::', () => {
   })
 
   it('should be a function', () => {
-    expect(findById).to.be.a('function')
+    expect(findOneByEmail).to.be.a('function')
   })
 
   it('should find one user', () => {
-    findByIdStub.resolves(userFixture)
+    findOneByEmailStub.resolves(userFixture)
 
-    return findById(userFixture.id)
+    return findOneByEmail(userFixture.email)
       .then((result) => {
-        sinon.assert.calledOnce(findByIdStub)
+        sinon.assert.calledOnce(findOneByEmailStub)
         expect(result).to.be.equal(userFixture)
       })
   })
 
   it('throw if user not found', () => {
-    findByIdStub.resolves(null)
+    findOneByEmailStub.resolves(null)
 
-    return findById(userFixture.id)
+    return findOneByEmail(userFixture.email)
       .catch((error) => {
-        sinon.assert.calledOnce(findByIdStub)
+        sinon.assert.calledOnce(findOneByEmailStub)
         expect(error).to.be.an('error')
       })
   })

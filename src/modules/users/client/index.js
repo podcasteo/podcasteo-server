@@ -1,18 +1,15 @@
-import find from 'lodash/find'
-
-import users from 'modules/users/fixtures/users'
-
-function findAll() {
-  // use db call mongoose-arangojs...etc here
-  return users // eslint-disable-line
-}
-
-function findById(id) {
-  // use db call mongoose-arangojs...etc here
-  return find(users, (user) => (user.id === id))// eslint-disable-line
-}
+import createUser from 'modules/users/client/createUser'
+import deleteUser from 'modules/users/client/deleteUser'
+import find from 'modules/users/client/find'
+import findOneByEmail from 'modules/users/client/findOneByEmail'
+import findOneById from 'modules/users/client/findOneById'
+import updateUser from 'modules/users/client/updateUser'
 
 export default {
-  find: findAll,
-  findById,
+  createUser,
+  deleteUser,
+  find,
+  findOneByEmail,
+  findOneById,
+  updateUser,
 }

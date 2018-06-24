@@ -1,5 +1,16 @@
 {
   "server": {
     "port": "PODCASTEO_SERVER_PORT"
+  },
+  "jwt": {
+    "secretKey": "JWT_SECRET_KEY"
+  },
+  "arango": {
+    "host": "ARANGO_HOST",
+    "database": "ARANGO_DATABASE",
+    "user": {
+      "login": "ARANGO_USER_LOGIN",
+      "password": "ARANGO_USER_PASSWORD"
+    }
   }
 }
