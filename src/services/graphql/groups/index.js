@@ -11,6 +11,7 @@ export default `
   type Group {
     id: String
     name: String
+    slug: String
     description: String
     avatar: String
     facebook: String
@@ -26,11 +27,21 @@ export default `
   }
 
   input CreateGroupInput {
+    id: String
     name: String!
+    slug: String
+    description: String
+    avatar: String
+    facebook: String
+    twitter: String
+    soundcloud: String
+    itunes: String
   }
 
   input GroupInput {
     id: String!
+    name: String
+    slug: String
     description: String
     avatar: String
     facebook: String
@@ -41,7 +52,7 @@ export default `
 
   extend type Query {
     groups(first: Int, offset: Int, name: String): Groups
-    group(id: String): Group
+    group(id: String, slug: String): Group
   }
 
   extend type Mutation {
@@ -61,7 +72,7 @@ export const GroupsResolver = {
   },
   Query: {
     groups: (root, args) => groupServices.find(args),
-    group: (root, args) => groupServices.findOneById(args.id),
+    group: (root, args) => groupServices.findOne(args),
   },
   Mutation: {
     createGroup: (root, args, context) => groupServices.createGroup(args.input, context),

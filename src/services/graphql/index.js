@@ -20,6 +20,15 @@ import LikeGroupEdge, {
 import MemberGroupEdge, {
   MemberGroupEdgeResolver,
 } from 'services/graphql/memberGroupEdge'
+import Podcasts, {
+  PodcastsResolver,
+} from 'services/graphql/podcasts'
+import LikePodcastEdge, {
+  LikePodcastEdgeResolver,
+} from 'services/graphql/likePodcastEdge'
+import MemberPodcastEdge, {
+  MemberPodcastEdgeResolver,
+} from 'services/graphql/memberPodcastEdge'
 
 const Root = `
   type Query {
@@ -52,6 +61,10 @@ export default makeExecutableSchema({
     Groups,
     LikeGroupEdge,
     MemberGroupEdge,
+    // Podcasts
+    Podcasts,
+    LikePodcastEdge,
+    MemberPodcastEdge,
   ],
   resolvers: [
     // Root
@@ -65,5 +78,9 @@ export default makeExecutableSchema({
     GroupsResolver,
     LikeGroupEdgeResolver,
     MemberGroupEdgeResolver,
+    // Podcast
+    PodcastsResolver,
+    LikePodcastEdgeResolver,
+    MemberPodcastEdgeResolver,
   ],
 })

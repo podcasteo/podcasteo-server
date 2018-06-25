@@ -1,12 +1,12 @@
 import joi from 'joi'
 import uuidv4 from 'uuid/v4'
 
-import client from 'modules/groups/client'
-import memberGroupClient from 'modules/memberGroupEdge/client'
+import client from 'modules/podcasts/client'
+import memberPodcastClient from 'modules/memberPodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
 import stringToSlug from 'helpers/stringToSlug'
 
-export default async function createGroup(data, context) {
+export default async function createPodcast(data, context) {
   joi.assert(data, joi.object().keys({
     id: joi.string(),
     name: joi.string().required(),
@@ -17,7 +17,7 @@ export default async function createGroup(data, context) {
     twitter: joi.string(),
     soundcloud: joi.string(),
     itunes: joi.string(),
-  }).required(), 'dataGroup')
+  }).required(), 'dataPodcast')
   joi.assert(context, joi.object().required(), 'context')
 
   const user = authMiddleware.handleUser(context)
@@ -30,14 +30,20 @@ export default async function createGroup(data, context) {
     data.slug = stringToSlug(data.name) // eslint-disable-line no-param-reassign
   }
 
-  await client.createGroup(data)
+  await client.createPodcast(data)
 
-  await memberGroupClient.createMemberGroup({
-    _from: user.id,
-    _to: data.id,
-    role: 'SUPERADMINISTRATOR',
-    type: 'MANAGER',
-  })
+  try {
+    await memberPodcastClient.createMemberPodcast({
+      _from: user.id,
+      _to: data.id,
+      role: 'SUPERADMINISTRATOR',
+      type: 'PRODUCER',
+    })
+  } catch (error) {
+    await client.deletePodcast(data.id)
+
+    throw error
+  }
 
   return client.findOneById(data.id)
 }

@@ -13,14 +13,14 @@ export default `
     MANAGER
   }
 
-  input CreateMemberGoupEdgeInput {
+  input CreateMemberGroupEdgeInput {
     _from: String!
     _to: String!
     role: MemberGroupRoleEnum
     type: MemberGroupTypeEnum
   }
 
-  input DeleteMemberGoupEdgeInput {
+  input DeleteMemberGroupEdgeInput {
     _from: String
     _to: String!
   }
@@ -47,8 +47,8 @@ export default `
   }
 
   extend type Mutation {
-    createMemberGroup(input: CreateMemberGoupEdgeInput!): MemberGroupEdge
-    deleteMemberGroup(input: DeleteMemberGoupEdgeInput!): ResolverPayload
+    createMemberGroup(input: CreateMemberGroupEdgeInput!): MemberGroupEdge
+    deleteMemberGroup(input: DeleteMemberGroupEdgeInput!): ResolverPayload
     updateMemberGroupRole(input: UpdateMemberGroupEdgeInput!): MemberGroupEdge
     updateMemberGroupType(input: UpdateMemberGroupEdgeInput!): MemberGroupEdge
   }

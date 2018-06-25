@@ -1,17 +1,17 @@
-import createGroup from './createGroup'
-import deleteGroup from './deleteGroup'
+import createPodcast from './createPodcast'
+import deletePodcast from './deletePodcast'
 import find from './find'
 import findOne from './findOne'
 import findOneById from './findOneById'
 import findOneBySlug from './findOneBySlug'
-import updateGroup from './updateGroup'
+import updatePodcast from './updatePodcast'
 
 export default {
-  createGroup,
-  deleteGroup,
+  createPodcast,
+  deletePodcast,
   find,
   findOne,
   findOneById,
   findOneBySlug,
-  updateGroup,
+  updatePodcast,
 }

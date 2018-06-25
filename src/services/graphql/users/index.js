@@ -2,6 +2,8 @@ import userServices from 'modules/users/services'
 import followUserServices from 'modules/followUserEdge/services'
 import likeGroupServices from 'modules/likeGroupEdge/services'
 import memberGroupServices from 'modules/memberGroupEdge/services'
+import likePodcastServices from 'modules/likePodcastEdge/services'
+import memberPodcastServices from 'modules/memberPodcastEdge/services'
 import authentification from 'helpers/authentification'
 
 export default `
@@ -34,6 +36,8 @@ export default `
     followers(first: Int, offset: Int): FollowUserEdges
     likeGroups(first: Int, offset: Int): LikeGroupEdges
     memberGroups(first: Int, offset: Int): MemberGroupEdges
+    likePodcasts(first: Int, offset: Int): LikePodcastEdges
+    memberPodcasts(first: Int, offset: Int): MemberPodcastEdges
     isFollower: Boolean
     isFollowing: Boolean
     createdAt: Date
@@ -89,6 +93,8 @@ export const UsersResolver = {
     isFollowing: (user, args, context) => followUserServices.isFollowing(user.id, context),
     likeGroups: (user, args) => likeGroupServices.findByUser(user.id, args),
     memberGroups: (user, args) => memberGroupServices.findByUser(user.id, args),
+    likePodcasts: (user, args) => likePodcastServices.findByUser(user.id, args),
+    memberPodcasts: (user, args) => memberPodcastServices.findByUser(user.id, args),
   },
   Query: {
     users: (root, args) => userServices.find(args),

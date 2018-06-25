@@ -1,11 +1,11 @@
 import joi from 'joi'
 
-import client from 'modules/memberGroupEdge/client'
-import groupClient from 'modules/groups/client'
+import client from 'modules/memberPodcastEdge/client'
+import podcastClient from 'modules/podcasts/client'
 import userClient from 'modules/users/client'
 import authMiddleware from 'helpers/authentification'
 
-export default async function createMemberGroup(data, context) {
+export default async function createMemberPodcast(data, context) {
   joi.assert(data, joi.object().keys({
     _from: joi.string().required(),
     _to: joi.string().required(),
@@ -16,11 +16,11 @@ export default async function createMemberGroup(data, context) {
 
   const user = authMiddleware.handleUser(context)
   const userFrom = await userClient.findOneById(data._from)
-  const groupTo = await groupClient.findOneById(data._to)
+  const podcastTo = await podcastClient.findOneById(data._to)
   let myMembership
 
   try {
-    myMembership = await client.findOneByEdge(user.id, groupTo.id)
+    myMembership = await client.findOneByEdge(user.id, podcastTo.id)
   } catch (error) {
     if (error.message === 'NOT_FOUND') {
       myMembership = {}
@@ -33,17 +33,17 @@ export default async function createMemberGroup(data, context) {
     throw new Error('NOT_ALLOW')
   }
 
-  const memberGroup = {
+  const memberPodcast = {
     ...data,
   }
 
-  await client.createMemberGroup(memberGroup)
+  await client.createMemberPodcast(memberPodcast)
 
-  const memberGroupResult = await client.findOneByEdge(userFrom.id, groupTo.id)
+  const memberPodcastResult = await client.findOneByEdge(userFrom.id, podcastTo.id)
 
   return {
-    ...memberGroupResult,
-    group: groupTo,
+    ...memberPodcastResult,
+    podcast: podcastTo,
     user: userFrom,
   }
 }

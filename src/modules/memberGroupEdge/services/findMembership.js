@@ -12,10 +12,10 @@ export default async function findMembership(_toGroupId, context) {
 
   try {
     const groupTo = await groupServices.findOneById(_toGroupId)
-    const memberShip = await client.findOneByEdge(user.id, _toGroupId)
+    const myMembership = await client.findOneByEdge(user.id, _toGroupId)
 
     return {
-      ...memberShip,
+      ...myMembership,
       group: groupTo,
       user: context.user,
     }
