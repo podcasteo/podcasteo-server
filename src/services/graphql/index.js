@@ -8,9 +8,18 @@ import Commons, {
 import Users, {
   UsersResolver,
 } from 'services/graphql/users'
-import FollowUserEdges, {
-  FollowUserEdgesResolver,
+import FollowUserEdge, {
+  FollowUserEdgeResolver,
 } from 'services/graphql/followUserEdge'
+import Groups, {
+  GroupsResolver,
+} from 'services/graphql/groups'
+import LikeGroupEdge, {
+  LikeGroupEdgeResolver,
+} from 'services/graphql/likeGroupEdge'
+import MemberGroupEdge, {
+  MemberGroupEdgeResolver,
+} from 'services/graphql/memberGroupEdge'
 
 const Root = `
   type Query {
@@ -38,7 +47,11 @@ export default makeExecutableSchema({
     Commons,
     // Users
     Users,
-    FollowUserEdges,
+    FollowUserEdge,
+    // Groups
+    Groups,
+    LikeGroupEdge,
+    MemberGroupEdge,
   ],
   resolvers: [
     // Root
@@ -47,6 +60,10 @@ export default makeExecutableSchema({
     CommonsResolver,
     // Users
     UsersResolver,
-    FollowUserEdgesResolver,
+    FollowUserEdgeResolver,
+    // Groups
+    GroupsResolver,
+    LikeGroupEdgeResolver,
+    MemberGroupEdgeResolver,
   ],
 })

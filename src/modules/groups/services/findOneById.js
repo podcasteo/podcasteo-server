@@ -3,7 +3,7 @@ import joi from 'joi'
 import client from 'modules/groups/client'
 
 export default async function findOneById(id) {
-  await joi.validate(id, joi.string().required())
+  joi.assert(id, joi.string().required(), 'id')
 
   const result = await client.findOneById(id)
 

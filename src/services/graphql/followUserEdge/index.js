@@ -1,4 +1,4 @@
-import followServices from 'modules/followUserEdge/services'
+import followUserServices from 'modules/followUserEdge/services'
 
 export default `
   input FollowUserEdgeInput {
@@ -7,8 +7,8 @@ export default `
 
   input DeleteFollowUserEdgeInput {
     id: String,
-    from: String,
-    to: String,
+    _from: String,
+    _to: String,
   }
 
   type FollowUserEdge {
@@ -28,9 +28,9 @@ export default `
   }
 `
 
-export const FollowUserEdgesResolver = {
+export const FollowUserEdgeResolver = {
   Mutation: {
-    createFollowUser: (root, args, context) => followServices.createFollowUser(args.input.id, context),
-    deleteFollowUser: (root, args, context) => followServices.deleteFollowUser(args.input, context),
+    createFollowUser: (root, args, context) => followUserServices.createFollowUser(args.input.id, context),
+    deleteFollowUser: (root, args, context) => followUserServices.deleteFollowUser(args.input, context),
   },
 }

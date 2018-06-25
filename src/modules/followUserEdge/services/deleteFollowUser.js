@@ -5,24 +5,26 @@ import client from 'modules/followUserEdge/client'
 import authMiddleware from 'helpers/authentification'
 
 export default async function deleteFollowUser(options, context) {
+  joi.assert(options, joi.object().keys({
+    id: joi.string(),
+    _from: joi.string(),
+    _to: joi.string().required(),
+  }).required(), 'data')
+  joi.assert(context, joi.object().required(), 'context')
+
   const user = authMiddleware.handleUser(context)
   let result = null
 
-  await joi.validate(options, {
-    from: joi.string(),
-    to: joi.string(),
-  })
-
-  if (isEmpty(options.from)) {
-    options.from = user.id // eslint-disable-line no-param-reassign
+  if (isEmpty(options._from)) {
+    options._from = user.id // eslint-disable-line no-param-reassign
   }
 
-  if (options.from !== user.id && user.role !== 'ADMINISTRATOR') {
+  if (options._from !== user.id && user.role !== 'ADMINISTRATOR') {
     throw new Error('NOT_ALLOW')
   }
 
   if (!options.id) {
-    result = await client.deleteFollowUserByEdge(options.from, options.to)
+    result = await client.deleteFollowUserByEdge(options._from, options._to)
   } else {
     result = await client.deleteFollowUser(options.id)
   }

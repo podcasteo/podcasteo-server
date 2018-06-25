@@ -1,9 +1,12 @@
 import groupAccessor from 'modules/groups/client/database/accessor'
 
 export default async (id) => {
-  const result = await groupAccessor.deleteWhere({
+  const data = await groupAccessor.deleteWhere({
     id,
   })
 
-  return result
+  return {
+    result: 'ok',
+    data,
+  }
 }

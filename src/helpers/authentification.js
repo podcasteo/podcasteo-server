@@ -6,26 +6,36 @@ function handleUser(req) {
   return req.user
 }
 
-function handleRole(role, req) {
-  const user = handleUser(req)
+function haveRole(user, role) {
   let authorize = true
 
-  if (role === 'SUPERADMIN') {
+  if (!user || !user.role) {
+    authorize = false
+  } else if (role === 'SUPERADMINISTRATOR') {
     if (user.role !== role) {
       authorize = false
     }
-  } else if (role === 'ADMIN') {
-    if (user.role === 'USER') {
+  } else if (role === 'ADMINISTRATOR') {
+    if (user.role === 'SIMPLE') {
       authorize = false
     }
   }
 
-  if (!authorize) {
+  return authorize
+}
+
+function handleRole(role, req) {
+  const user = handleUser(req)
+
+  if (!haveRole(user, role)) {
     throw new Error('NOT_ALLOW')
   }
+
+  return user
 }
 
 export default {
   handleUser,
   handleRole,
+  haveRole,
 }

@@ -6,10 +6,10 @@ import jwt from 'jsonwebtoken'
 import client from 'modules/users/client'
 
 export default async function login(data) {
-  await joi.validate(data, {
+  joi.assert(data, joi.object().keys({
     email: joi.string().required(),
     password: joi.string().required(),
-  })
+  }).required(), 'dataUser')
 
   const user = await client.findOneByEmail(data.email)
 

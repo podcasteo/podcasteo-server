@@ -2,22 +2,16 @@ import joi from 'joi'
 
 import client from 'modules/users/client'
 
-export default async function findOne(args) {
-  await joi.validate(args, {
+export default async function findOne(options) {
+  joi.assert(options, joi.object().keys({
     email: joi.string(),
     id: joi.string(),
-  })
+  }).required(), 'options')
 
-  let result
-
-  if (args.id) {
-    result = await client.findOneById(args.id)
-  } else if (args.email) {
-    result = await client.findOneByEmail(args.email)
-  }
-
-  if (result) {
-    return result
+  if (options.id) {
+    return client.findOneById(options.id)
+  } else if (options.email) {
+    return client.findOneByEmail(options.email)
   }
 
   throw new Error('NOT_FOUND')

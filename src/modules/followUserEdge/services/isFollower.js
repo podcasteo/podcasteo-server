@@ -4,9 +4,10 @@ import client from 'modules/followUserEdge/client'
 import authMiddleware from 'helpers/authentification'
 
 export default async function isFollower(_fromUserId, context) {
-  const user = authMiddleware.handleUser(context)
-
   joi.assert(_fromUserId, joi.string().required(), '_fromUserId')
+  joi.assert(context, joi.object().required(), 'context')
+
+  const user = authMiddleware.handleUser(context)
 
   try {
     await client.findOneByEdge(_fromUserId, user.id)

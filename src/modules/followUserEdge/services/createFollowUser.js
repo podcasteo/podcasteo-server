@@ -1,19 +1,18 @@
 import joi from 'joi'
 
 import client from 'modules/followUserEdge/client'
-import userServices from 'modules/users/services'
+import userClient from 'modules/users/client'
 import authMiddleware from 'helpers/authentification'
 
 export default async function createFollowUser(_toUserId, context) {
-  const user = authMiddleware.handleUser(context)
-
   joi.assert(_toUserId, joi.string().required(), '_toUserId')
+  joi.assert(context, joi.object().required(), 'context')
 
-  const userTo = await userServices.findOneById(_toUserId)
+  const user = authMiddleware.handleUser(context)
+  const userTo = await userClient.findOneById(_toUserId)
   const followUser = {
     _from: user.id,
     _to: userTo.id,
-    createdAt: new Date().toISOString(),
   }
 
   await client.createFollowUser(followUser)

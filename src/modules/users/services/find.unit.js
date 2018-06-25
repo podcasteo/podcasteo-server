@@ -37,7 +37,7 @@ describe('(Users) find ::', () => {
       ],
     })
 
-    return find()
+    return find({})
       .then((result) => {
         sinon.assert.calledOnce(findStub)
         expect(result.data).to.be.an('array').that.includes(userFixture)

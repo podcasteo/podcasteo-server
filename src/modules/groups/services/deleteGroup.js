@@ -1,19 +1,35 @@
 import joi from 'joi'
 
-// import membersClient from 'modules/members/client'
-import groupsClient from 'modules/groups/client'
+import client from 'modules/groups/client'
+import memberGroupClient from 'modules/memberGroupEdge/client'
+import likeGroupClient from 'modules/likeGroupEdge/client'
+import authMiddleware from 'helpers/authentification'
 
-export default async function updateGroup(groupId, user) {
-  await joi.validate(groupId, joi.string().required(), 'groupId')
-  await joi.validate(user, joi.object(), 'data')
+export default async function deleteGroup(groupId, context) {
+  joi.assert(groupId, joi.string().required(), 'groupId')
+  joi.assert(context, joi.object().required(), 'context')
 
-  const member = true // await membersClient.findById(user.id, groupId)
+  const user = authMiddleware.handleUser(context)
+  let membership
 
-  if (member.role !== 'ADMINISTRATOR') {
+  try {
+    membership = await memberGroupClient.findOneByEdge(user.id, groupId)
+  } catch (error) {
+    if (error.message === 'NOT_FOUND') {
+      membership = {}
+    }
+  }
+
+  if (membership.role !== 'SUPERADMINISTRATOR' && user.role !== 'SUPERADMINISTRATOR') {
     throw new Error('NOT_ALLOW')
   }
 
-  // delete everythings memberEdge - likeEdge - podcastEdge - group
+  // delete group - memberEdge - likeEdge - podcastEdge
+  await client.deleteGroup(groupId)
+  await memberGroupClient.deleteMemberGroupByGroup(groupId)
+  await likeGroupClient.deleteLikeGroupByGroup(groupId)
 
-  return groupsClient.findOneById(groupId)
+  return {
+    result: 'ok',
+  }
 }

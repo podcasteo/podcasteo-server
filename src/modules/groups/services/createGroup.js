@@ -2,9 +2,11 @@ import joi from 'joi'
 import uuidv4 from 'uuid/v4'
 
 import client from 'modules/groups/client'
+import memberGroupClient from 'modules/memberGroupEdge/client'
+import authMiddleware from 'helpers/authentification'
 
-export default async function createGroup(data) {
-  await joi.validate(data, {
+export default async function createGroup(data, context) {
+  joi.assert(data, joi.object().keys({
     id: joi.string(),
     name: joi.string().required(),
     description: joi.string(),
@@ -13,18 +15,23 @@ export default async function createGroup(data) {
     twitter: joi.string(),
     soundcloud: joi.string(),
     itunes: joi.string(),
-    createdAt: joi.string(),
+  }).required(), 'dataGroup')
+  joi.assert(context, joi.object().required(), 'context')
+
+  const user = authMiddleware.handleUser(context)
+
+  if (!data.id) {
+    data.id = uuidv4() // eslint-disable-line no-param-reassign
+  }
+
+  await client.createGroup(data)
+
+  await memberGroupClient.createMemberGroup({
+    _from: user.id,
+    _to: data.id,
+    role: 'SUPERADMINISTRATOR',
+    type: 'MANAGER',
   })
 
-  const group = {
-    ...data,
-  }
-
-  if (!group.id) {
-    group.id = uuidv4()
-  }
-
-  await client.createGroup(group)
-
-  return client.findOneById(group.id)
+  return client.findOneById(data.id)
 }

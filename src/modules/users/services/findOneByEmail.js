@@ -3,7 +3,7 @@ import joi from 'joi'
 import client from 'modules/users/client'
 
 export default async function findOneByEmail(email) {
-  await joi.validate(email, joi.string().required())
+  joi.assert(email, joi.string().required(), 'email')
 
   const result = await client.findOneByEmail(email)
 

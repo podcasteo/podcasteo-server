@@ -1,10 +1,10 @@
 import joi from 'joi'
 
-import client from 'modules/groups/client'
+import client from 'modules/likeGroupEdge/client'
 import setPageInfo from 'helpers/setPageInfo'
 
-export default async function findByLike(userId, options) {
-  joi.assert(userId, joi.string().required(), 'userId')
+export default async function findByUser(_fromUserId, options) {
+  joi.assert(_fromUserId, joi.string().required(), '_fromUserId')
 
   const parameters = await joi.validate(options, {
     first: joi.number().default(20),
@@ -17,7 +17,7 @@ export default async function findByLike(userId, options) {
   const {
     data,
     totalCount,
-  } = await client.findByLike(userId, parameters)
+  } = await client.findByUser(_fromUserId, parameters)
 
   return {
     pageInfo: setPageInfo(data, totalCount, first, offset),

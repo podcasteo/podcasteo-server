@@ -6,6 +6,7 @@ export default async (data) => {
     ...data,
     _from: `${userAccessor.name}/${data._from}`, // eslint-disable-line no-underscore-dangle
     _to: `${userAccessor.name}/${data._to}`, // eslint-disable-line no-underscore-dangle
+    createdAt: new Date().toISOString(),
   }
   const result = await followUserAccessor.insert(follow)
 

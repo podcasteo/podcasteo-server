@@ -1,20 +1,30 @@
 import joi from 'joi'
 
-// import membersClient from 'modules/members/client'
-import groupsClient from 'modules/groups/client'
+import client from 'modules/groups/client'
+import memberGroupClient from 'modules/memberGroupEdge/client'
+import authMiddleware from 'helpers/authentification'
 
-export default async function updateGroup(groupId, data, user) {
-  await joi.validate(groupId, joi.string().required(), 'groupId')
-  await joi.validate(data, joi.object(), 'data')
-  await joi.validate(user, joi.object(), 'data')
+export default async function updateGroup(groupId, data, context) {
+  joi.assert(groupId, joi.string().required(), 'groupId')
+  joi.assert(data, joi.object().required(), 'dataGroup')
+  joi.assert(context, joi.object().required(), 'context')
 
-  const member = true // await membersClient.findById(user.id, groupId)
+  const user = authMiddleware.handleUser(context)
+  let membership
 
-  if (member.role !== 'ADMINISTRATOR') {
+  try {
+    membership = await memberGroupClient.findOneByEdge(user.id, groupId)
+  } catch (error) {
+    if (error.message === 'NOT_FOUND') {
+      membership = {}
+    }
+  }
+
+  if (membership.role !== 'ADMINISTRATOR' && user.role !== 'SUPERADMINISTRATOR') {
     throw new Error('NOT_ALLOW')
   }
 
-  await groupsClient.updateGroup(groupId, data)
+  await client.updateGroup(groupId, data)
 
-  return groupsClient.findOneById(groupId)
+  return client.findOneById(groupId)
 }

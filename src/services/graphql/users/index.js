@@ -1,5 +1,7 @@
 import userServices from 'modules/users/services'
-import followerServices from 'modules/followUserEdge/services'
+import followUserServices from 'modules/followUserEdge/services'
+import likeGroupServices from 'modules/likeGroupEdge/services'
+import memberGroupServices from 'modules/memberGroupEdge/services'
 import authentification from 'helpers/authentification'
 
 export default `
@@ -30,6 +32,8 @@ export default `
     role: UserRole
     following(first: Int, offset: Int): FollowUserEdges
     followers(first: Int, offset: Int): FollowUserEdges
+    likeGroups(first: Int, offset: Int): LikeGroupEdges
+    memberGroups(first: Int, offset: Int): MemberGroupEdges
     isFollower: Boolean
     isFollowing: Boolean
     createdAt: Date
@@ -79,10 +83,12 @@ export default `
 
 export const UsersResolver = {
   User: {
-    followers: (user, args) => followerServices.findByFollowing(user.id, args),
-    following: (user, args) => followerServices.findByFollower(user.id, args),
-    isFollower: (user, args, context) => followerServices.isFollower(user.id, context),
-    isFollowing: (user, args, context) => followerServices.isFollowing(user.id, context),
+    followers: (user, args) => followUserServices.findByFollowing(user.id, args),
+    following: (user, args) => followUserServices.findByFollower(user.id, args),
+    isFollower: (user, args, context) => followUserServices.isFollower(user.id, context),
+    isFollowing: (user, args, context) => followUserServices.isFollowing(user.id, context),
+    likeGroups: (user, args) => likeGroupServices.findByUser(user.id, args),
+    memberGroups: (user, args) => memberGroupServices.findByUser(user.id, args),
   },
   Query: {
     users: (root, args) => userServices.find(args),
