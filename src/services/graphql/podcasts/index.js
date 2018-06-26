@@ -1,6 +1,7 @@
 import podcastServices from 'modules/podcasts/services'
 import likePodcastServices from 'modules/likePodcastEdge/services'
 import memberPodcastServices from 'modules/memberPodcastEdge/services'
+import providerPodcastServices from 'modules/providerPodcastEdge/services'
 
 export default `
   type Podcasts {
@@ -20,6 +21,7 @@ export default `
     itunes: String
     likes(first: Int, offset: Int): LikePodcastEdges
     members(first: Int, offset: Int): MemberPodcastEdges
+    provider(first: Int, offset: Int, type: ProviderPodcastTypeEnum!): ProviderPodcastEdges
     isLike: Boolean
     isMember: Boolean
     membership: MemberPodcastEdge
@@ -66,6 +68,7 @@ export const PodcastsResolver = {
   Podcast: {
     likes: (podcast, args) => likePodcastServices.findByPodcast(podcast.id, args),
     members: (podcast, args) => memberPodcastServices.findByPodcast(podcast.id, args),
+    provider: (podcast, args) => providerPodcastServices.find(podcast.id, args),
     isLike: (podcast, args, context) => likePodcastServices.isLike(podcast.id, context),
     isMember: (podcast, args, context) => memberPodcastServices.isMember(podcast.id, context),
     membership: (podcast, args, context) => memberPodcastServices.findMembership(podcast.id, context),

@@ -2,7 +2,7 @@ import memberPodcastServices from 'modules/memberPodcastEdge/services'
 
 export default `
   enum MemberPodcastRoleEnum {
-    SIMPLE
+    STANDARD
     ADMINISTRATOR
     SUPERADMINISTRATOR
   }

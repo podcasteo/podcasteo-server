@@ -2,7 +2,7 @@ import memberGroupServices from 'modules/memberGroupEdge/services'
 
 export default `
   enum MemberGroupRoleEnum {
-    SIMPLE
+    STANDARD
     ADMINISTRATOR
     SUPERADMINISTRATOR
   }

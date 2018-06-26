@@ -1,4 +1,5 @@
 import groupAccessor from 'modules/groups/client/database/accessor'
+import errMiddleware from 'helpers/errors'
 
 export default async (id) => {
   const data = await groupAccessor.selectWhere({
@@ -6,7 +7,7 @@ export default async (id) => {
   })
 
   if (data.length < 1) {
-    throw new Error('NOT_FOUND')
+    throw errMiddleware.notFound(groupAccessor.name)
   }
 
   return data[0]

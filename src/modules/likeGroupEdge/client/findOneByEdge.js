@@ -1,6 +1,7 @@
 import likeGroupAccessor from 'modules/likeGroupEdge/client/database/accessor'
 import userAccessor from 'modules/users/client/database/accessor'
 import groupAccessor from 'modules/groups/client/database/accessor'
+import errMiddleware from 'helpers/errors'
 
 export default async (_fromUserId, _toGroupId) => {
   const globalIdFrom = `${userAccessor.name}/${_fromUserId}`
@@ -11,7 +12,7 @@ export default async (_fromUserId, _toGroupId) => {
   })
 
   if (data.length < 1) {
-    throw new Error('NOT_FOUND')
+    throw errMiddleware.notFound(likeGroupAccessor.name)
   }
 
   return data[0]

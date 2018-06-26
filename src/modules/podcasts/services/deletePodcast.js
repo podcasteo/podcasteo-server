@@ -3,7 +3,10 @@ import joi from 'joi'
 import client from 'modules/podcasts/client'
 import memberPodcastClient from 'modules/memberPodcastEdge/client'
 import likePodcastClient from 'modules/likePodcastEdge/client'
+import providerPodcastClient from 'modules/providerPodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
+import errMiddleware from 'helpers/errors'
+import rolesMiddleware from 'helpers/roles'
 
 export default async function deletePodcast(podcastId, context) {
   joi.assert(podcastId, joi.string().required(), 'podcastId')
@@ -15,17 +18,19 @@ export default async function deletePodcast(podcastId, context) {
   try {
     membership = await memberPodcastClient.findOneByEdge(user.id, podcastId)
   } catch (error) {
-    if (error.message === 'NOT_FOUND') {
+    if (error.status === errMiddleware.notFound().status) {
       membership = {}
     }
   }
 
-  if (membership.role !== 'SUPERADMINISTRATOR' && user.role !== 'SUPERADMINISTRATOR') {
-    throw new Error('NOT_ALLOW')
+  if (!authMiddleware.haveRole(membership, rolesMiddleware.SUPERADMINISTRATOR) &&
+      !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
+    throw errMiddleware.forbidden()
   }
 
   // delete podcast - memberEdge - likeEdge - groupEdge
   await likePodcastClient.deleteLikePodcastByPodcast(podcastId)
+  await providerPodcastClient.deleteProviderPodcastByPodcast(podcastId)
   await memberPodcastClient.deleteMemberPodcastByPodcast(podcastId)
   await client.deletePodcast(podcastId)
 

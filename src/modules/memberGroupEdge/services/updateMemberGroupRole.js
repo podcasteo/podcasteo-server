@@ -4,6 +4,8 @@ import client from 'modules/memberGroupEdge/client'
 import userServices from 'modules/users/services'
 import groupServices from 'modules/groups/services'
 import authMiddleware from 'helpers/authentification'
+import errMiddleware from 'helpers/errors'
+import rolesMiddleware from 'helpers/roles'
 
 export default async function updateMemberGroupRole(data, context) {
   joi.assert(data, joi.object().keys({
@@ -22,17 +24,17 @@ export default async function updateMemberGroupRole(data, context) {
   try {
     myMembership = await client.findOneByEdge(user.id, data._to)
   } catch (error) {
-    if (error.message === 'NOT_FOUND') {
+    if (error.status === errMiddleware.notFound().status) {
       myMembership = {}
     } else {
       throw error
     }
   }
 
-  if (!authMiddleware.haveRole(user, 'SUPERADMINISTRATOR')) {
-    if ((data.role === 'SUPERADMINISTRATOR' && !authMiddleware.haveRole(myMembership, 'SUPERADMINISTRATOR')) ||
-        (data.role === 'ADMINISTRATOR' && !authMiddleware.haveRole(myMembership, 'ADMINISTRATOR'))) {
-      throw new Error('NOT_ALLOW')
+  if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
+    if ((data.role === rolesMiddleware.SUPERADMINISTRATOR && !authMiddleware.haveRole(myMembership, rolesMiddleware.SUPERADMINISTRATOR)) ||
+        (data.role === rolesMiddleware.ADMINISTRATOR && !authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR))) {
+      throw errMiddleware.forbidden()
     }
   }
 

@@ -5,6 +5,7 @@ import client from 'modules/groups/client'
 import memberGroupClient from 'modules/memberGroupEdge/client'
 import authMiddleware from 'helpers/authentification'
 import stringToSlug from 'helpers/stringToSlug'
+import rolesMiddleware from 'helpers/roles'
 
 export default async function createGroup(data, context) {
   joi.assert(data, joi.object().keys({
@@ -35,7 +36,7 @@ export default async function createGroup(data, context) {
   await memberGroupClient.createMemberGroup({
     _from: user.id,
     _to: data.id,
-    role: 'SUPERADMINISTRATOR',
+    role: rolesMiddleware.SUPERADMINISTRATOR,
     type: 'MANAGER',
   })
 

@@ -1,6 +1,9 @@
+import errMiddleware from 'helpers/errors'
+import rolesMiddleware from 'helpers/roles'
+
 function handleUser(req) {
   if (!req.user) {
-    throw new Error('UNAUTHORIZED')
+    throw errMiddleware.unauthorized()
   }
 
   return req.user
@@ -11,12 +14,12 @@ function haveRole(user, role) {
 
   if (!user || !user.role) {
     authorize = false
-  } else if (role === 'SUPERADMINISTRATOR') {
+  } else if (role === rolesMiddleware.SUPERADMINISTRATOR) {
     if (user.role !== role) {
       authorize = false
     }
-  } else if (role === 'ADMINISTRATOR') {
-    if (user.role === 'SIMPLE') {
+  } else if (role === rolesMiddleware.ADMINISTRATOR) {
+    if (user.role === rolesMiddleware.STANDARD) {
       authorize = false
     }
   }
@@ -28,7 +31,7 @@ function handleRole(role, req) {
   const user = handleUser(req)
 
   if (!haveRole(user, role)) {
-    throw new Error('NOT_ALLOW')
+    throw errMiddleware.forbidden()
   }
 
   return user

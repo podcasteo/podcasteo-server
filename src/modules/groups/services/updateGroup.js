@@ -3,6 +3,8 @@ import joi from 'joi'
 import client from 'modules/groups/client'
 import memberGroupClient from 'modules/memberGroupEdge/client'
 import authMiddleware from 'helpers/authentification'
+import errMiddleware from 'helpers/errors'
+import rolesMiddleware from 'helpers/roles'
 
 export default async function updateGroup(groupId, data, context) {
   joi.assert(groupId, joi.string().required(), 'groupId')
@@ -15,13 +17,14 @@ export default async function updateGroup(groupId, data, context) {
   try {
     membership = await memberGroupClient.findOneByEdge(user.id, groupId)
   } catch (error) {
-    if (error.message === 'NOT_FOUND') {
+    if (error.status === errMiddleware.notFound().status) {
       membership = {}
     }
   }
 
-  if (membership.role !== 'ADMINISTRATOR' && user.role !== 'SUPERADMINISTRATOR') {
-    throw new Error('NOT_ALLOW')
+  if (!authMiddleware.haveRole(membership, rolesMiddleware.ADMINISTRATOR) &&
+      !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
+    throw errMiddleware.forbidden()
   }
 
   await client.updateGroup(groupId, data)

@@ -4,6 +4,8 @@ import client from 'modules/memberPodcastEdge/client'
 import userServices from 'modules/users/services'
 import podcastServices from 'modules/podcasts/services'
 import authMiddleware from 'helpers/authentification'
+import errMiddleware from 'helpers/errors'
+import rolesMiddleware from 'helpers/roles'
 
 export default async function updateMemberPodcastType(data, context) {
   joi.assert(data, joi.object().keys({
@@ -22,15 +24,18 @@ export default async function updateMemberPodcastType(data, context) {
   try {
     myMembership = await client.findOneByEdge(user.id, data._to)
   } catch (error) {
-    if (error.message === 'NOT_FOUND') {
+    if (error.status === errMiddleware.notFound().status) {
       myMembership = {}
     } else {
       throw error
     }
   }
 
-  if (!authMiddleware.haveRole(user, 'SUPERADMINISTRATOR') && !authMiddleware.haveRole(myMembership, 'ADMINISTRATOR')) {
-    throw new Error('NOT_ALLOW')
+  if (data._from !== user.id) {
+    if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR) &&
+        !authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR)) {
+      throw errMiddleware.forbidden()
+    }
   }
 
   await client.updateMemberPodcast(membership.id, {

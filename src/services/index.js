@@ -7,6 +7,7 @@ import {
 } from 'apollo-server-express'
 
 import schema from 'services/graphql'
+import apiServices from 'services/api'
 import authMiddleware from 'services/middlewares/authentification'
 
 const router = Router()
@@ -21,5 +22,8 @@ router.use('/graphql', graphqlExpress((req) => ({
 router.use('/graphiql', graphiqlExpress({
   endpointURL: '/graphql',
 }))
+
+router.use('/api', authMiddleware.handleToken)
+router.use('/api', apiServices)
 
 export default router

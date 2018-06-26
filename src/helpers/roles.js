@@ -1,0 +1,7 @@
+const roles = {
+  STANDARD: 'STANDARD',
+  ADMINISTRATOR: 'ADMINISTRATOR',
+  SUPERADMINISTRATOR: 'SUPERADMINISTRATOR',
+}
+
+export default Object.freeze(roles)

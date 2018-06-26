@@ -1,4 +1,5 @@
 import podcastAccessor from 'modules/podcasts/client/database/accessor'
+import errMiddleware from 'helpers/errors'
 
 export default async (slug) => {
   const data = await podcastAccessor.selectWhere({
@@ -6,7 +7,7 @@ export default async (slug) => {
   })
 
   if (data.length < 1) {
-    throw new Error('NOT_FOUND')
+    throw errMiddleware.notFound(podcastAccessor.name)
   }
 
   return data[0]

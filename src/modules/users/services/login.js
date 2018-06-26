@@ -4,6 +4,7 @@ import joi from 'joi'
 import jwt from 'jsonwebtoken'
 
 import client from 'modules/users/client'
+import errMiddleware from 'helpers/errors'
 
 export default async function login(data) {
   joi.assert(data, joi.object().keys({
@@ -12,15 +13,10 @@ export default async function login(data) {
   }).required(), 'dataUser')
 
   const user = await client.findOneByEmail(data.email)
-
-  if (!user) {
-    throw new Error('NOT_FOUND')
-  }
-
   const validAuth = await bcrypt.compare(data.password, user.password)
 
   if (!validAuth) {
-    throw new Error('INVALID_PASSWORD')
+    throw errMiddleware.badRequest()
   }
 
   const token = jwt.sign(

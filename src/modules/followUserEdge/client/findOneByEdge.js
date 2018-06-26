@@ -1,5 +1,6 @@
 import followUserAccessor from 'modules/followUserEdge/client/database/accessor'
 import userAccessor from 'modules/users/client/database/accessor'
+import errMiddleware from 'helpers/errors'
 
 export default async (_fromUserId, _toUserId) => {
   const globalIdFrom = `${userAccessor.name}/${_fromUserId}`
@@ -10,7 +11,7 @@ export default async (_fromUserId, _toUserId) => {
   })
 
   if (data.length < 1) {
-    throw new Error('NOT_FOUND')
+    throw errMiddleware.notFound(followUserAccessor.name)
   }
 
   return data[0]

@@ -21,7 +21,9 @@ module.exports = {
       //    Podcast
       likePodcastEdge: 'LikePodcastEdge',
       memberPodcastEdge: 'MemberPodcastEdge',
-      dataPodcastEdge: 'DataPodcastEdge',
+      providerPodcast: 'ProviderPodcast',
+      providerPodcastEdge: 'ProviderPodcastEdge',
+      rankingPodcast: 'RankingPodcast',
       rankingPodcastEdge: 'RankingPodcastEdge',
       //    Group
       likeGroupEdge: 'LikeGroupEdge',

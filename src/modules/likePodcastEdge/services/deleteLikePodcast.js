@@ -3,6 +3,8 @@ import isEmpty from 'lodash/isEmpty'
 
 import client from 'modules/likePodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
+import errMiddleware from 'helpers/errors'
+import rolesMiddleware from 'helpers/roles'
 
 export default async function deleteLikePodcast(options, context) {
   joi.assert(options, joi.object().keys({
@@ -19,8 +21,10 @@ export default async function deleteLikePodcast(options, context) {
     options._from = user.id // eslint-disable-line no-param-reassign
   }
 
-  if (options._from !== user.id && user.role !== 'ADMINISTRATOR') {
-    throw new Error('NOT_ALLOW')
+  if (options._from !== user.id) {
+    if (!authMiddleware.haveRole(user, rolesMiddleware.ADMINISTRATOR)) {
+      throw errMiddleware.forbidden()
+    }
   }
 
   if (!options.id) {

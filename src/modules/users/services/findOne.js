@@ -1,6 +1,7 @@
 import joi from 'joi'
 
 import client from 'modules/users/client'
+import errMiddleware from 'helpers/errors'
 
 export default async function findOne(options) {
   joi.assert(options, joi.object().keys({
@@ -14,5 +15,5 @@ export default async function findOne(options) {
     return client.findOneByEmail(options.email)
   }
 
-  throw new Error('NOT_FOUND')
+  throw errMiddleware.badRequest()
 }

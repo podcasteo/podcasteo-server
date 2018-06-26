@@ -1,4 +1,5 @@
 import userAccessor from 'modules/users/client/database/accessor'
+import errMiddleware from 'helpers/errors'
 
 export default async (email) => {
   const data = await userAccessor.selectWhere({
@@ -6,7 +7,7 @@ export default async (email) => {
   })
 
   if (data.length < 1) {
-    throw new Error('NOT_FOUND')
+    throw errMiddleware.notFound(userAccessor.name)
   }
 
   return data[0]

@@ -1,6 +1,7 @@
 import likePodcastAccessor from 'modules/likePodcastEdge/client/database/accessor'
 import userAccessor from 'modules/users/client/database/accessor'
 import podcastAccessor from 'modules/podcasts/client/database/accessor'
+import errMiddleware from 'helpers/errors'
 
 export default async (_fromUserId, _toPodcastId) => {
   const globalIdFrom = `${userAccessor.name}/${_fromUserId}`
@@ -11,7 +12,7 @@ export default async (_fromUserId, _toPodcastId) => {
   })
 
   if (data.length < 1) {
-    throw new Error('NOT_FOUND')
+    throw errMiddleware.notFound(likePodcastAccessor.name)
   }
 
   return data[0]
