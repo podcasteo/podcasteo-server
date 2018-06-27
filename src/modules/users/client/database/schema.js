@@ -2,8 +2,6 @@ import joi from 'joi'
 
 import rolesMiddleware from 'helpers/roles'
 
-console.log('rolesMiddleware', rolesMiddleware)
-
 export const model = joi.object().keys({
   id: joi.string().required(),
   email: joi.string().required(),

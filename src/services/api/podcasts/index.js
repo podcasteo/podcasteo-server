@@ -4,6 +4,7 @@ import {
 
 import podcastServices from 'modules/podcasts/services'
 import providerPodcastServices from 'modules/providerPodcastEdge/services'
+import rankingPodcastServices from 'modules/rankingPodcastEdge/services'
 import {
   wrapAsync,
 } from 'services/middlewares/error'
@@ -19,6 +20,18 @@ async function find(req, res) {
 
 async function findProviderPodcasts(req, res) {
   const result = await providerPodcastServices.find(req.params.id, req.query)
+
+  return res.send(result)
+}
+
+async function findRanking(req, res) {
+  const result = await rankingPodcastServices.findByDate(req.params.date, req.query)
+
+  return res.send(result)
+}
+
+async function findRankingPodcasts(req, res) {
+  const result = await rankingPodcastServices.findByPodcast(req.params.id, req.query)
 
   return res.send(result)
 }
@@ -53,11 +66,6 @@ async function createOrUpdatePodcast(req, res) {
 }
 
 async function createOrUpdateProviderPodcasts(req, res) {
-  // const {
-  //   _to,
-  //   type,
-  //   createdAt,
-  // } = req.body
   const data = {
     ...req.body,
     _to: req.params.id,
@@ -77,12 +85,35 @@ async function createOrUpdateProviderPodcasts(req, res) {
   return res.send(result)
 }
 
+async function createOrUpdateRankingPodcasts(req, res) {
+  const data = {
+    ...req.body,
+    _to: req.params.id,
+  }
+  let result
+
+  try {
+    result = await rankingPodcastServices.updateRankingPodcast(data, req)
+  } catch (error) {
+    if (error.status === errMiddleware.notFound().status) {
+      result = await rankingPodcastServices.createRankingPodcast(data, req)
+    } else {
+      throw error
+    }
+  }
+
+  return res.send(result)
+}
+
 router.get('/', wrapAsync(find))
 router.get('/:id', wrapAsync(findOneById))
 router.put('/', wrapAsync(createOrUpdatePodcast))
 router.get('/:id/providers', wrapAsync(findProviderPodcasts))
 router.put('/:id/providers', wrapAsync(createOrUpdateProviderPodcasts))
+router.get('/:id/rankings', wrapAsync(findRankingPodcasts))
+router.put('/:id/rankings', wrapAsync(createOrUpdateRankingPodcasts))
 
+router.get('/rankings/:date', wrapAsync(findRanking))
 // router.delete('/:id', deletePodcast)
 
 export default router
