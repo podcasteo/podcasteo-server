@@ -49,6 +49,14 @@ export default `
     password: String!
   }
 
+  input FacebookInput {
+    email: String!
+    facebookId: String!
+    username: String
+    firstname: String
+    lastname: String
+  }
+
   input UserInput {
     id: String!
     username: String
@@ -81,6 +89,7 @@ export default `
     createUser(input: CreateUserInput!): LoginPayload
     deleteUser(input: UserInput!): ResolverPayload
     login(input: LoginInput!): LoginPayload
+    handleFacebook(input: FacebookInput!): LoginPayload
     updateUser(input: UserInput!): User
   }
 `
@@ -106,5 +115,6 @@ export const UsersResolver = {
     deleteUser: (root, args, context) => userServices.deleteUser(args.input.id, context),
     updateUser: (root, args, context) => userServices.updateUser(args.input.id, args.input, context),
     login: (root, args) => userServices.login(args.input),
+    handleFacebook: (root, args) => userServices.handleFacebookUser(args.input),
   },
 }
