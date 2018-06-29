@@ -3,6 +3,7 @@ import joi from 'joi'
 import client from 'modules/providerPodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
 import errMiddleware from 'helpers/errors'
+import handleFirstDate from 'helpers/handleFirstDate'
 import rolesMiddleware from 'helpers/roles'
 
 export default async function deleteProviderPodcast(options, context) {
@@ -18,6 +19,8 @@ export default async function deleteProviderPodcast(options, context) {
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
     throw errMiddleware.forbidden()
   }
+
+  options.createdAt = handleFirstDate(options.createdAt) // eslint-disable-line no-param-reassign
 
   const {
     _to,

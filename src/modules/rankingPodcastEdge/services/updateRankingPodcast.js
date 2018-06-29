@@ -3,6 +3,7 @@ import joi from 'joi'
 import client from 'modules/rankingPodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
 import errMiddleware from 'helpers/errors'
+import handleFirstDate from 'helpers/handleFirstDate'
 import rolesMiddleware from 'helpers/roles'
 
 export default async function updateRankingPodcast(data, context) {
@@ -29,6 +30,8 @@ export default async function updateRankingPodcast(data, context) {
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
     throw errMiddleware.forbidden()
   }
+
+  data.createdAt = handleFirstDate(data.createdAt) // eslint-disable-line no-param-reassign
 
   const {
     _to,
