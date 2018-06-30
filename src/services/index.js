@@ -5,6 +5,9 @@ import {
   graphqlExpress,
   graphiqlExpress,
 } from 'apollo-server-express'
+import {
+  apolloUploadExpress,
+} from 'apollo-upload-server'
 
 import schema from 'services/graphql'
 import apiServices from 'services/api'
@@ -13,6 +16,9 @@ import authMiddleware from 'services/middlewares/authentification'
 const router = Router()
 
 router.use('/graphql', authMiddleware.handleToken)
+router.use('/graphql', apolloUploadExpress({
+  maxFiles: 1,
+}))
 router.use('/graphql', graphqlExpress((req) => ({
   schema,
   context: {

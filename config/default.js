@@ -36,4 +36,17 @@ module.exports = {
     secretKey: 'JWT_SECRET_KEY',
     expiresIn: '60d',
   },
+  aws: {
+    config: {
+      accessKeyId: 'nothingtosee',
+      secretAccessKey: 'nothingtosee',
+      region: 'eu-west-3',
+    },
+    s3: {
+      region: 'eu-west-3',
+      params: {
+        Bucket: 'podcasteo',
+      },
+    },
+  },
 }

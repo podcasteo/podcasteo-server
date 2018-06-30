@@ -2,6 +2,7 @@ import podcastServices from 'modules/podcasts/services'
 import likePodcastServices from 'modules/likePodcastEdge/services'
 import memberPodcastServices from 'modules/memberPodcastEdge/services'
 import providerPodcastServices from 'modules/providerPodcastEdge/services'
+import rankingPodcastServices from 'modules/rankingPodcastEdge/services'
 
 export default `
   type Podcasts {
@@ -22,6 +23,7 @@ export default `
     likes(first: Int, offset: Int): LikePodcastEdges
     members(first: Int, offset: Int): MemberPodcastEdges
     provider(first: Int, offset: Int, type: ProviderPodcastTypeEnum!): ProviderPodcastEdges
+    rankings(first: Int, offset: Int): RankingPodcastEdges
     isLike: Boolean
     isMember: Boolean
     membership: MemberPodcastEdge
@@ -72,6 +74,7 @@ export const PodcastsResolver = {
     isLike: (podcast, args, context) => likePodcastServices.isLike(podcast.id, context),
     isMember: (podcast, args, context) => memberPodcastServices.isMember(podcast.id, context),
     membership: (podcast, args, context) => memberPodcastServices.findMembership(podcast.id, context),
+    rankings: (podcast, args) => rankingPodcastServices.findByPodcast(podcast.id, args),
   },
   Query: {
     podcasts: (root, args) => podcastServices.find(args),

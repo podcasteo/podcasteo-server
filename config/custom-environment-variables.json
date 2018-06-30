@@ -12,5 +12,11 @@
       "login": "ARANGO_USER_LOGIN",
       "password": "ARANGO_USER_PASSWORD"
     }
+  },
+  "aws": {
+    "config": {
+      "accessKeyId": "AWS_ACCESS_KEY_ID",
+      "secretAccessKey": "AWS_SECRET_ACCESS_KEY"
+    }
   }
 }

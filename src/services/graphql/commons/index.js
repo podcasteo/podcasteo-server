@@ -4,9 +4,21 @@ import {
 import {
   Kind,
 } from 'graphql/language'
+import {
+  GraphQLUpload,
+} from 'apollo-upload-server'
 
 export default`
   scalar Date
+  scalar Upload
+
+  type File {
+    id: ID!
+    path: String!
+    filename: String!
+    mimetype: String!
+    encoding: String!
+  }
 
   type PageInfo {
     totalCount: Int,
@@ -21,6 +33,7 @@ export default`
 `
 
 export const CommonsResolver = { // eslint-disable-line import/prefer-default-export
+  Upload: GraphQLUpload,
   Date: new GraphQLScalarType({
     name: 'Date',
     description: 'Date custom scalar type',
@@ -31,11 +44,13 @@ export const CommonsResolver = { // eslint-disable-line import/prefer-default-ex
       return new Date(value) // value sent to the client
     },
     parseLiteral(ast) {
+      const date = ast.value
+
       if (ast.kind === Kind.INT) {
-        return parseInt(ast.value, 10) // ast value is always in string format
+        return parseInt(date, 10) // ast value is always in string format
       }
 
-      return null
+      return new Date(date).toISOString()
     },
   }),
 }

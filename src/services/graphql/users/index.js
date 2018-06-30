@@ -55,6 +55,7 @@ export default `
     username: String
     firstname: String
     lastname: String
+    facebookAvatar: String
   }
 
   input UserInput {
@@ -91,11 +92,13 @@ export default `
     login(input: LoginInput!): LoginPayload
     handleFacebook(input: FacebookInput!): LoginPayload
     updateUser(input: UserInput!): User
+    uploadUserAvatar(file: Upload!): User
   }
 `
 
 export const UsersResolver = {
   User: {
+    avatar: (user) => userServices.getSignedAvatar(user),
     followers: (user, args) => followUserServices.findByFollowing(user.id, args),
     following: (user, args) => followUserServices.findByFollower(user.id, args),
     isFollower: (user, args, context) => followUserServices.isFollower(user.id, context),
@@ -116,5 +119,6 @@ export const UsersResolver = {
     updateUser: (root, args, context) => userServices.updateUser(args.input.id, args.input, context),
     login: (root, args) => userServices.login(args.input),
     handleFacebook: (root, args) => userServices.handleFacebookUser(args.input),
+    uploadUserAvatar: (root, args, context) => userServices.uploadAvatar(args.file, context),
   },
 }

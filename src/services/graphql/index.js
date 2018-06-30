@@ -30,6 +30,9 @@ import MemberPodcastEdge, {
   MemberPodcastEdgeResolver,
 } from 'services/graphql/memberPodcastEdge'
 import ProviderPodcastEdge from 'services/graphql/providerPodcastEdge'
+import RankingPodcastEdge, {
+  RankingPodcastEdgeResolver,
+} from 'services/graphql/rankingPodcastEdge'
 
 const Root = `
   type Query {
@@ -67,6 +70,7 @@ export default makeExecutableSchema({
     LikePodcastEdge,
     MemberPodcastEdge,
     ProviderPodcastEdge,
+    RankingPodcastEdge,
   ],
   resolvers: [
     // Root
@@ -84,5 +88,6 @@ export default makeExecutableSchema({
     PodcastsResolver,
     LikePodcastEdgeResolver,
     MemberPodcastEdgeResolver,
+    RankingPodcastEdgeResolver,
   ],
 })

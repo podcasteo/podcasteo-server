@@ -5,7 +5,7 @@ import setPageInfo from 'helpers/setPageInfo'
 import handleFirstDate from 'helpers/handleFirstDate'
 
 export default async function findByDate(createdAt, options) {
-  joi.assert(createdAt, joi.string().required(), 'createdAt')
+  joi.assert(createdAt, joi.date().required(), 'createdAt')
 
   createdAt = handleFirstDate(createdAt) // eslint-disable-line no-param-reassign
 
