@@ -11,6 +11,9 @@ export const model = joi.object().keys({
   facebook: joi.string(),
   twitter: joi.string(),
   soundcloud: joi.string(),
+  isPodcasteo: joi.boolean(),
+  haveLeadWomen: joi.boolean(),
+  haveWomen: joi.boolean(),
   itunes: joi.string(),
   createdAt: joi.string(),
 })

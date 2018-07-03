@@ -8,6 +8,9 @@ export default async function find(options) {
     first: joi.number().default(20),
     offset: joi.number().default(0),
     name: joi.string(),
+    haveLeadWomen: joi.boolean(),
+    haveWomen: joi.boolean(),
+    isPodcasteo: joi.boolean(),
   })
   const {
     first,

@@ -28,6 +28,9 @@ export default `
     rankings(first: Int, offset: Int): RankingPodcastEdges
     isLike: Boolean
     isMember: Boolean
+    isPodcasteo: Boolean
+    haveLeadWomen: Boolean
+    haveWomen: Boolean
     membership: MemberPodcastEdge
     createdAt: Date
   }
@@ -61,7 +64,7 @@ export default `
   }
 
   extend type Query {
-    podcasts(first: Int, offset: Int, name: String): Podcasts
+    podcasts(first: Int, offset: Int, name: String, isPodcasteo: Boolean, haveLeadWomen: Boolean, haveWomen: Boolean): Podcasts
     podcast(id: String, slug: String): Podcast
   }
 
