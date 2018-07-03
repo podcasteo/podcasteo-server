@@ -5,6 +5,8 @@ export const model = joi.object().keys({
   name: joi.string().required(),
   slug: joi.string().required(),
   description: joi.string(),
+  categorie: joi.string(),
+  region: joi.string(),
   avatar: joi.string(),
   facebook: joi.string(),
   twitter: joi.string(),

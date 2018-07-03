@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 import uuidv4 from 'uuid/v4'
 
 import client from 'modules/users/client'
+import stringToSlug from 'helpers/stringToSlug'
 
 export default async function createUser(data) {
   joi.assert(data, joi.object().keys({
@@ -22,6 +23,10 @@ export default async function createUser(data) {
 
   if (!user.id) {
     user.id = uuidv4()
+  }
+
+  if (!user.slug) {
+    user.slug = stringToSlug(user.username)
   }
 
   await client.createUser(user)

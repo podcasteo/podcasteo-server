@@ -15,6 +15,8 @@ export default `
     name: String
     slug: String
     description: String
+    categorie: String
+    region: String
     avatar: String
     facebook: String
     twitter: String
@@ -35,6 +37,8 @@ export default `
     name: String!
     slug: String
     description: String
+    categorie: String
+    region: String
     avatar: String
     facebook: String
     twitter: String
@@ -47,6 +51,8 @@ export default `
     name: String
     slug: String
     description: String
+    categorie: String
+    region: String
     avatar: String
     facebook: String
     twitter: String
@@ -63,11 +69,13 @@ export default `
     createPodcast(input: CreatePodcastInput!): Podcast
     updatePodcast(input: PodcastInput!): Podcast
     deletePodcast(input: PodcastInput!): ResolverPayload
+    uploadPodcastAvatar(id: String!, file: Upload!): Podcast
   }
 `
 
 export const PodcastsResolver = {
   Podcast: {
+    avatar: (podcast) => podcastServices.getSignedAvatar(podcast),
     likes: (podcast, args) => likePodcastServices.findByPodcast(podcast.id, args),
     members: (podcast, args) => memberPodcastServices.findByPodcast(podcast.id, args),
     provider: (podcast, args) => providerPodcastServices.find(podcast.id, args),
@@ -84,5 +92,6 @@ export const PodcastsResolver = {
     createPodcast: (root, args, context) => podcastServices.createPodcast(args.input, context),
     deletePodcast: (root, args, context) => podcastServices.deletePodcast(args.input.id, context),
     updatePodcast: (root, args, context) => podcastServices.updatePodcast(args.input.id, args.input, context),
+    uploadPodcastAvatar: (root, args, context) => podcastServices.uploadAvatar(args.id, args.file, context),
   },
 }

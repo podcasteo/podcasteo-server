@@ -4,6 +4,7 @@ import find from 'modules/podcasts/client/find'
 import findOneById from 'modules/podcasts/client/findOneById'
 import findOneBySlug from 'modules/podcasts/client/findOneBySlug'
 import updatePodcast from 'modules/podcasts/client/updatePodcast'
+import uploadAvatar from 'modules/podcasts/client/uploadAvatar'
 
 export default {
   createPodcast,
@@ -12,4 +13,5 @@ export default {
   findOneById,
   findOneBySlug,
   updatePodcast,
+  uploadAvatar,
 }

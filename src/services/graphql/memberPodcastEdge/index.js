@@ -9,6 +9,7 @@ export default `
 
   enum MemberPodcastTypeEnum {
     MEMBER
+    PODCASTER
     PRODUCER
     MANAGER
   }

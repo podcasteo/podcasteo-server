@@ -19,7 +19,7 @@ export default `
 
   type ProviderPodcastEdge {
     id: String
-    type: MemberPodcastTypeEnum
+    type: ProviderPodcastTypeEnum
     createdAt: Date
     data: ProviderPodcast
   }

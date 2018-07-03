@@ -8,6 +8,7 @@ import uuidv4 from 'uuid/v4'
 
 import s3Bucket from 'clients/aws'
 import client from 'modules/users/client'
+import stringToSlug from 'helpers/stringToSlug'
 
 export default async function handleFacebookUser(data) {
   joi.assert(data, joi.object().keys({
@@ -25,6 +26,10 @@ export default async function handleFacebookUser(data) {
   } catch (error) {
     if (!user.id) {
       user.id = uuidv4()
+    }
+
+    if (!user.slug) {
+      user.slug = stringToSlug(user.username || `${user.firstname}.${user.lastname}`)
     }
 
     await client.createUser(user)

@@ -59,11 +59,13 @@ export default `
     createGroup(input: CreateGroupInput!): Group
     updateGroup(input: GroupInput!): Group
     deleteGroup(input: GroupInput!): ResolverPayload
+    uploadGroupAvatar(id: String!, file: Upload!): Group
   }
 `
 
 export const GroupsResolver = {
   Group: {
+    avatar: (group) => groupServices.getSignedAvatar(group),
     likes: (group, args) => likeGroupServices.findByGroup(group.id, args),
     members: (group, args) => memberGroupServices.findByGroup(group.id, args),
     isLike: (group, args, context) => likeGroupServices.isLike(group.id, context),
@@ -78,5 +80,6 @@ export const GroupsResolver = {
     createGroup: (root, args, context) => groupServices.createGroup(args.input, context),
     deleteGroup: (root, args, context) => groupServices.deleteGroup(args.input.id, context),
     updateGroup: (root, args, context) => groupServices.updateGroup(args.input.id, args.input, context),
+    uploadGroupAvatar: (root, args, context) => groupServices.uploadAvatar(args.id, args.file, context),
   },
 }

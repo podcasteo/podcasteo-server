@@ -4,6 +4,7 @@ import find from 'modules/groups/client/find'
 import findOneById from 'modules/groups/client/findOneById'
 import findOneBySlug from 'modules/groups/client/findOneBySlug'
 import updateGroup from 'modules/groups/client/updateGroup'
+import uploadAvatar from 'modules/groups/client/uploadAvatar'
 
 export default {
   createGroup,
@@ -12,4 +13,5 @@ export default {
   findOneById,
   findOneBySlug,
   updateGroup,
+  uploadAvatar,
 }

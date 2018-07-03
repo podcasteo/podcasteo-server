@@ -8,7 +8,8 @@ import findOneById from './findOneById'
 import findOne from './findOne'
 import login from './login'
 import updateUser from './updateUser'
-import uploadAvatar from './uploadAvatar'
+import uploadAvatarFromRest from './uploadAvatarFromRest'
+import uploadAvatarFromGraphQL from './uploadAvatarFromGraphQL'
 
 export default {
   createUser,
@@ -21,5 +22,6 @@ export default {
   getSignedAvatar,
   login,
   updateUser,
-  uploadAvatar,
+  uploadAvatarFromRest,
+  uploadAvatarFromGraphQL,
 }

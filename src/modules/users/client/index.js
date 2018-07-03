@@ -4,6 +4,7 @@ import find from 'modules/users/client/find'
 import findOneByEmail from 'modules/users/client/findOneByEmail'
 import findOneByFacebookId from 'modules/users/client/findOneByFacebookId'
 import findOneById from 'modules/users/client/findOneById'
+import findOneBySlug from 'modules/users/client/findOneBySlug'
 import updateUser from 'modules/users/client/updateUser'
 
 export default {
@@ -13,5 +14,6 @@ export default {
   findOneByEmail,
   findOneByFacebookId,
   findOneById,
+  findOneBySlug,
   updateUser,
 }

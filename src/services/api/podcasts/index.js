@@ -1,6 +1,7 @@
 import {
   Router,
 } from 'express'
+import multer from 'multer'
 
 import podcastServices from 'modules/podcasts/services'
 import providerPodcastServices from 'modules/providerPodcastEdge/services'
@@ -10,6 +11,10 @@ import {
 } from 'services/middlewares/error'
 import errMiddleware from 'helpers/errors'
 
+const storage = multer.memoryStorage()
+const upload = multer({
+  storage,
+})
 const router = Router()
 
 async function find(req, res) {
@@ -65,6 +70,24 @@ async function createOrUpdatePodcast(req, res) {
   return res.send(result)
 }
 
+async function uploadAvatar(req, res) {
+  const {
+    id,
+  } = req.params
+  const {
+    file,
+  } = req
+  let result
+
+  if (file) {
+    result = await podcastServices.uploadAvatarFromRest(id, file, req)
+  } else {
+    throw new Error('MISSING_FILE')
+  }
+
+  return res.send(result)
+}
+
 async function createOrUpdateProviderPodcasts(req, res) {
   const data = {
     ...req.body,
@@ -109,6 +132,7 @@ router.get('/', wrapAsync(find))
 router.get('/:id', wrapAsync(findOneById))
 router.put('/', wrapAsync(createOrUpdatePodcast))
 router.get('/:id/providers', wrapAsync(findProviderPodcasts))
+router.put('/:id/avatar', upload.single('file'), wrapAsync(uploadAvatar))
 router.put('/:id/providers', wrapAsync(createOrUpdateProviderPodcasts))
 router.get('/:id/rankings', wrapAsync(findRankingPodcasts))
 router.put('/:id/rankings', wrapAsync(createOrUpdateRankingPodcasts))

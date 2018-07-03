@@ -23,6 +23,10 @@ router.get('/', (req, res) => {
         method: 'PUT',
         url: '/podcasts',
       },
+      uploadAvatar: {
+        method: 'PUT',
+        url: '/podcasts/:id/avatar',
+      },
       findProviderPodcasts: {
         method: 'GET',
         url: '/podcasts/:id/providers',

@@ -13,6 +13,13 @@ export default `
     SUPERADMINISTRATOR
   }
 
+  enum UserGenderEnum {
+    Male
+    Female
+    Other
+    None
+  }
+
   type Users {
     data: [User]
     pageInfo: PageInfo
@@ -27,6 +34,8 @@ export default `
     firstname: String
     lastname: String
     birthday: Date
+    gender: UserGenderEnum
+    slug: String
     facebook: String
     twitter: String
     soundcloud: String
@@ -56,6 +65,7 @@ export default `
     firstname: String
     lastname: String
     facebookAvatar: String
+    gender: UserGenderEnum
   }
 
   input UserInput {
@@ -65,6 +75,7 @@ export default `
     firstname: String
     lastname: String
     birthday: Date
+    gender: UserGenderEnum
     facebook: String
     twitter: String
     soundcloud: String

@@ -12,6 +12,8 @@ export default async function createPodcast(data, context) {
     name: joi.string().required(),
     slug: joi.string(),
     description: joi.string(),
+    categorie: joi.string(),
+    region: joi.string(),
     avatar: joi.string(),
     facebook: joi.string(),
     twitter: joi.string(),

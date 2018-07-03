@@ -1,22 +1,15 @@
-import path from 'path'
-
-import s3Bucket from 'clients/aws'
+import client from 'modules/users/client'
 import authMiddleware from 'helpers/authentification'
 import errMiddleware from 'helpers/errors'
 
-export default async function uploadAvatar(file, context) {
+export default async function uploadAvatarFromGraphQL(file, context) {
   const user = authMiddleware.handleUser(context)
   const {
     stream,
   } = await file
-  const uri = path.join('users', user.id, 'avatar', 'default.jpg')
 
   try {
-    await s3Bucket.upload({
-      Key: uri,
-      Body: stream,
-      ContentType: 'image/jpeg',
-    }).promise()
+    await client.uploadAvatar(user.id, stream)
 
     return user
   } catch (error) {
