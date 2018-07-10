@@ -3,13 +3,21 @@ import {
 } from 'express'
 
 import podcasts from 'services/api/podcasts'
+import users from 'services/api/users'
 
 const router = Router()
 
 router.use('/podcasts', podcasts)
+router.use('/users', users)
 
 router.get('/', (req, res) => {
   res.send({
+    users: {
+      login: {
+        method: 'PUT',
+        url: '/users/login',
+      },
+    },
     podcast: {
       find: {
         method: 'GET',

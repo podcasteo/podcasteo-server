@@ -22,10 +22,10 @@ export default async (createdAt, options) => {
 
     LET result = (
       ${edgesQuery}
-        LIMIT ${offset}, ${first}
         LET podcast = DOCUMENT(edge._to)
         LET data = DOCUMENT(edge._from)
         SORT data.score DESC
+        LIMIT ${offset}, ${first}
       RETURN MERGE(
         edge,
         {
