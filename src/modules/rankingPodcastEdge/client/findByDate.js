@@ -20,12 +20,10 @@ export default async (createdAt, options) => {
       RETURN edge
     )
 
-    LET result = (
+    LET rankings = (
       ${edgesQuery}
         LET podcast = DOCUMENT(edge._to)
         LET data = DOCUMENT(edge._from)
-        SORT data.score DESC
-        LIMIT ${offset}, ${first}
       RETURN MERGE(
         edge,
         {
@@ -33,6 +31,13 @@ export default async (createdAt, options) => {
           data: data
         }
       )
+    )
+
+    LET result = (
+      FOR ranking in rankings
+        SORT ranking.data.ranking
+        LIMIT ${offset}, ${first}
+        RETURN ranking
     )
 
     RETURN {
