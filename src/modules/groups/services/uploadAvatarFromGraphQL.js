@@ -5,6 +5,7 @@ import memberGroupClient from 'modules/memberPodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
 import errMiddleware from 'helpers/errors'
 import rolesMiddleware from 'helpers/roles'
+import uploadAvatar from 'helpers/uploadAvatar'
 
 export default async function uploadAvatarFromGraphQL(groupId, file, context) {
   joi.assert(groupId, joi.string().required(), 'groupId')
@@ -26,12 +27,16 @@ export default async function uploadAvatarFromGraphQL(groupId, file, context) {
     throw errMiddleware.forbidden()
   }
 
-  const {
-    stream,
-  } = await file
-
   try {
-    await client.uploadAvatar(groupId, stream)
+    const {
+      stream,
+    } = await file
+    const group = await client.findOneById(groupId)
+    const result = await uploadAvatar('groups', group.slug, stream)
+
+    await client.updateGroup(groupId, {
+      avatar: result.url,
+    })
 
     return client.findOneById(groupId)
   } catch (error) {

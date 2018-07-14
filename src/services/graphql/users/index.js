@@ -5,6 +5,7 @@ import memberGroupServices from 'modules/memberGroupEdge/services'
 import likePodcastServices from 'modules/likePodcastEdge/services'
 import memberPodcastServices from 'modules/memberPodcastEdge/services'
 import authentification from 'helpers/authentification'
+import getAvatar from 'helpers/getAvatar'
 
 export default `
   enum UserRole {
@@ -93,7 +94,7 @@ export default `
 
   extend type Query {
     users(first: Int, offset: Int, username: String): Users
-    user(id: String, email: String): User
+    user(id: String, email: String, slug: String): User
     self: User
   }
 
@@ -109,7 +110,7 @@ export default `
 
 export const UsersResolver = {
   User: {
-    avatar: (user) => userServices.getSignedAvatar(user),
+    avatar: (user) => getAvatar('users', user),
     followers: (user, args) => followUserServices.findByFollowing(user.id, args),
     following: (user, args) => followUserServices.findByFollower(user.id, args),
     isFollower: (user, args, context) => followUserServices.isFollower(user.id, context),
@@ -130,6 +131,6 @@ export const UsersResolver = {
     updateUser: (root, args, context) => userServices.updateUser(args.input.id, args.input, context),
     login: (root, args) => userServices.login(args.input),
     handleFacebook: (root, args) => userServices.handleFacebookUser(args.input),
-    uploadUserAvatar: (root, args, context) => userServices.uploadAvatar(args.file, context),
+    uploadUserAvatar: (root, args, context) => userServices.uploadAvatarFromGraphQL(args.file, context),
   },
 }

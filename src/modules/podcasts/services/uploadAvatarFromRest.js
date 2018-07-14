@@ -5,6 +5,7 @@ import memberPodcastClient from 'modules/memberPodcastEdge/client'
 import authMiddleware from 'helpers/authentification'
 import errMiddleware from 'helpers/errors'
 import rolesMiddleware from 'helpers/roles'
+import uploadAvatar from 'helpers/uploadAvatar'
 
 export default async function uploadAvatarFromGraphQL(podcastId, file, context) {
   joi.assert(podcastId, joi.string().required(), 'podcastId')
@@ -29,7 +30,12 @@ export default async function uploadAvatarFromGraphQL(podcastId, file, context) 
   const stream = file.buffer
 
   try {
-    await client.uploadAvatar(podcastId, stream)
+    const podcast = await client.findOneById(podcastId)
+    const result = await uploadAvatar('podcasts', podcast.slug, stream)
+
+    await client.updatePodcast(podcastId, {
+      avatar: result.url,
+    })
 
     return client.findOneById(podcastId)
   } catch (error) {

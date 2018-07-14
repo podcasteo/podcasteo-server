@@ -10,7 +10,7 @@ export default async function isLike(_toPodcastId, context) {
   try {
     const user = authMiddleware.handleUser(context)
 
-    await client.findOneByUsers(user.id, _toPodcastId)
+    await client.findOneByEdge(user.id, _toPodcastId)
 
     return true
   } catch (error) {

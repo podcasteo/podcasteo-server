@@ -3,6 +3,7 @@ import likePodcastServices from 'modules/likePodcastEdge/services'
 import memberPodcastServices from 'modules/memberPodcastEdge/services'
 import providerPodcastServices from 'modules/providerPodcastEdge/services'
 import rankingPodcastServices from 'modules/rankingPodcastEdge/services'
+import getAvatar from 'helpers/getAvatar'
 
 export default `
   type Podcasts {
@@ -78,7 +79,7 @@ export default `
 
 export const PodcastsResolver = {
   Podcast: {
-    avatar: (podcast) => podcastServices.getSignedAvatar(podcast),
+    avatar: (podcast) => getAvatar('podcasts', podcast),
     likes: (podcast, args) => likePodcastServices.findByPodcast(podcast.id, args),
     members: (podcast, args) => memberPodcastServices.findByPodcast(podcast.id, args),
     provider: (podcast, args) => providerPodcastServices.find(podcast.id, args),
@@ -95,6 +96,6 @@ export const PodcastsResolver = {
     createPodcast: (root, args, context) => podcastServices.createPodcast(args.input, context),
     deletePodcast: (root, args, context) => podcastServices.deletePodcast(args.input.id, context),
     updatePodcast: (root, args, context) => podcastServices.updatePodcast(args.input.id, args.input, context),
-    uploadPodcastAvatar: (root, args, context) => podcastServices.uploadAvatar(args.id, args.file, context),
+    uploadPodcastAvatar: (root, args, context) => podcastServices.uploadAvatarFromGraphQL(args.id, args.file, context),
   },
 }

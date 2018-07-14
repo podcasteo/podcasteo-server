@@ -1,14 +1,12 @@
-import path from 'path'
-
 import config from 'config'
 import joi from 'joi'
 import jwt from 'jsonwebtoken'
 import fetch from 'node-fetch'
 import uuidv4 from 'uuid/v4'
 
-import s3Bucket from 'clients/aws'
 import client from 'modules/users/client'
 import stringToSlug from 'helpers/stringToSlug'
+import uploadAvatar from 'helpers/uploadAvatar'
 
 export default async function handleFacebookUser(data) {
   joi.assert(data, joi.object().keys({
@@ -36,14 +34,9 @@ export default async function handleFacebookUser(data) {
 
     if (facebookAvatar) {
       const stream = await fetch(facebookAvatar)
-      const uri = path.join('users', user.id, 'avatar', 'default.jpg')
 
       try {
-        await s3Bucket.upload({
-          Key: uri,
-          Body: stream.body,
-          ContentType: 'image/jpeg',
-        }).promise()
+        await uploadAvatar('users', user.slug, stream.body)
       } catch (errorImg) {
         console.log(errorImg) // eslint-disable-line
       }

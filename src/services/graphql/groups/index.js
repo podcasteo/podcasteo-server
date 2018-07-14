@@ -1,6 +1,7 @@
 import groupServices from 'modules/groups/services'
 import likeGroupServices from 'modules/likeGroupEdge/services'
 import memberGroupServices from 'modules/memberGroupEdge/services'
+import getAvatar from 'helpers/getAvatar'
 
 export default `
   type Groups {
@@ -65,7 +66,7 @@ export default `
 
 export const GroupsResolver = {
   Group: {
-    avatar: (group) => groupServices.getSignedAvatar(group),
+    avatar: (group) => getAvatar('groups', group),
     likes: (group, args) => likeGroupServices.findByGroup(group.id, args),
     members: (group, args) => memberGroupServices.findByGroup(group.id, args),
     isLike: (group, args, context) => likeGroupServices.isLike(group.id, context),
@@ -80,6 +81,6 @@ export const GroupsResolver = {
     createGroup: (root, args, context) => groupServices.createGroup(args.input, context),
     deleteGroup: (root, args, context) => groupServices.deleteGroup(args.input.id, context),
     updateGroup: (root, args, context) => groupServices.updateGroup(args.input.id, args.input, context),
-    uploadGroupAvatar: (root, args, context) => groupServices.uploadAvatar(args.id, args.file, context),
+    uploadGroupAvatar: (root, args, context) => groupServices.uploadAvatarFromGraphQL(args.id, args.file, context),
   },
 }

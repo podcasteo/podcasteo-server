@@ -7,7 +7,7 @@ export default async function find(options) {
   const parameters = await joi.validate(options, {
     first: joi.number().default(20),
     offset: joi.number().default(0),
-    username: joi.string(),
+    username: joi.string().allow(''),
   })
   const {
     first,

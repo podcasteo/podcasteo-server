@@ -55,8 +55,8 @@ export default async (createdAt, options) => {
 
   result.data = result.data.map((element) => ({
     ...rankingPodcastEdgeAccessor.serializer.deserialize(element),
-    data: rankingPodcastAccessor.serializer.deserialize(element.data),
-    podcast: podcastAccessor.serializer.deserialize(element.podcast),
+    data: rankingPodcastAccessor.serializer.deserialize(element.data || {}),
+    podcast: podcastAccessor.serializer.deserialize(element.podcast || {}),
   }))
 
   return result

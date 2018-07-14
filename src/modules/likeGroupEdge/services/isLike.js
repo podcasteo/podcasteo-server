@@ -10,7 +10,7 @@ export default async function isLike(_toGroupId, context) {
   try {
     const user = authMiddleware.handleUser(context)
 
-    await client.findOneByUsers(user.id, _toGroupId)
+    await client.findOneByEdge(user.id, _toGroupId)
 
     return true
   } catch (error) {
