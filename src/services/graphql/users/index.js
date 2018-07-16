@@ -71,6 +71,7 @@ export default `
 
   input UserInput {
     id: String!
+    email: String
     username: String
     description: String
     firstname: String
