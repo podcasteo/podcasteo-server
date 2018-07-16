@@ -14,7 +14,7 @@ export default async (_toPodcastId, createdAt) => {
   })
 
   if (rankingPodcastEdge.length < 1) {
-    throw errMiddleware.notFound(rankingPodcastEdgeAccessor.name)
+    throw errMiddleware.notFound(rankingPodcastEdgeAccessor.name, 'classement introuvable')
   } else {
     result = {
       ...rankingPodcastEdge[0],
@@ -26,7 +26,7 @@ export default async (_toPodcastId, createdAt) => {
   })
 
   if (rankingPodcast.length < 1) {
-    throw errMiddleware.notFound(rankingPodcastAccessor.name)
+    throw errMiddleware.notFound(rankingPodcastAccessor.name, 'classement introuvable')
   } else {
     result.data = rankingPodcast[0] // eslint-disable-line prefer-destructuring
   }

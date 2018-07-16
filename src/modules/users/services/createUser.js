@@ -6,6 +6,7 @@ import uuidv4 from 'uuid/v4'
 
 import client from 'modules/users/client'
 import stringToSlug from 'helpers/stringToSlug'
+import errMiddleware from 'helpers/errors'
 
 export default async function createUser(data) {
   joi.assert(data, joi.object().keys({
@@ -14,34 +15,38 @@ export default async function createUser(data) {
     password: joi.string().required(),
   }).required(), 'dataUser')
 
-  const salt = await bcrypt.genSalt(5)
-  const hash = await bcrypt.hash(data.password, salt)
-  const user = {
-    ...data,
-    password: hash,
-  }
+  try {
+    const salt = await bcrypt.genSalt(5)
+    const hash = await bcrypt.hash(data.password, salt)
+    const user = {
+      ...data,
+      password: hash,
+    }
 
-  if (!user.id) {
-    user.id = uuidv4()
-  }
+    if (!user.id) {
+      user.id = uuidv4()
+    }
 
-  if (!user.slug) {
-    user.slug = stringToSlug(user.username)
-  }
+    if (!user.slug) {
+      user.slug = stringToSlug(user.username)
+    }
 
-  await client.createUser(user)
+    await client.createUser(user)
 
-  const token = jwt.sign(
-    {
-      id: user.id,
-    },
-    config.get('jwt.secretKey'),
-    {
-      expiresIn: config.get('jwt.expiresIn'),
-    },
-  )
+    const token = jwt.sign(
+      {
+        id: user.id,
+      },
+      config.get('jwt.secretKey'),
+      {
+        expiresIn: config.get('jwt.expiresIn'),
+      },
+    )
 
-  return {
-    token,
+    return {
+      token,
+    }
+  } catch (error) {
+    throw errMiddleware.badRequest('users', "Le pseudo ou l'email sont déjà pris.")
   }
 }

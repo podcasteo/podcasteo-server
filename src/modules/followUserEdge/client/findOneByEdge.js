@@ -11,7 +11,7 @@ export default async (_fromUserId, _toUserId) => {
   })
 
   if (data.length < 1) {
-    throw errMiddleware.notFound(followUserAccessor.name)
+    throw errMiddleware.notFound(followUserAccessor.name, 'follower introuvable')
   }
 
   return data[0]

@@ -34,7 +34,7 @@ export default async function deleteMemberGroup(options, context) {
   if (options._from !== user.id) {
     if (!authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR) &&
         !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('memberGroup', 'non autorisé')
     }
   }
 

@@ -18,6 +18,6 @@ export default async function uploadAvatarFromRest(file) {
   } catch (error) {
     console.log(error) // eslint-disable-line
 
-    throw errMiddleware.badRequest()
+    throw errMiddleware.badRequest('users', "erreur au téléchargement de l'avatar")
   }
 }

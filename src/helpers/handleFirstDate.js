@@ -4,7 +4,7 @@ export default function handleFirstDate(dateStr) {
   const date = new Date(dateStr)
 
   if (!date.getTime()) {
-    throw errMiddleware.badRequest()
+    throw errMiddleware.badRequest('handleFirstDate', 'date invalide')
   }
 
   const firstDate = new Date(date.getFullYear(), date.getMonth(), 1)

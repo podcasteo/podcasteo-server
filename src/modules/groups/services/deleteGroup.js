@@ -24,7 +24,7 @@ export default async function deleteGroup(groupId, context) {
 
   if (!authMiddleware.haveRole(membership, rolesMiddleware.SUPERADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('groups', 'non autorisé')
   }
 
   // delete group - memberEdge - likeEdge - podcastEdge

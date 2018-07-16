@@ -33,7 +33,7 @@ export default async function createMemberGroup(data, context) {
 
   if (!authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('memberGroup', 'non autorisé')
   }
 
   const memberGroup = {

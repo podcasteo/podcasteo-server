@@ -7,7 +7,7 @@ export default async (id) => {
   })
 
   if (data.length < 1) {
-    throw errMiddleware.notFound(groupAccessor.name)
+    throw errMiddleware.notFound(groupAccessor.name, 'groupe introuvable')
   }
 
   return data[0]

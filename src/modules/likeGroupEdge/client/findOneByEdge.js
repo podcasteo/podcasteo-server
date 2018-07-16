@@ -12,7 +12,7 @@ export default async (_fromUserId, _toGroupId) => {
   })
 
   if (data.length < 1) {
-    throw errMiddleware.notFound(likeGroupAccessor.name)
+    throw errMiddleware.notFound(likeGroupAccessor.name, 'like introuvable')
   }
 
   return data[0]

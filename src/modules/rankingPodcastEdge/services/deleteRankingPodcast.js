@@ -16,7 +16,7 @@ export default async function deleteRankingPodcast(options, context) {
   const user = authMiddleware.handleUser(context)
 
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('ranking', 'non autorisé')
   }
 
   options.createdAt = handleFirstDate(options.createdAt) // eslint-disable-line no-param-reassign

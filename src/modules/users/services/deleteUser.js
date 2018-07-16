@@ -18,7 +18,7 @@ export default async function deleteUser(userId, context) {
 
   if (user.id !== userId) {
     if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('users', 'non autorisé')
     }
   }
 

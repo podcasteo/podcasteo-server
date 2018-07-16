@@ -18,5 +18,5 @@ export default async function findOne(options) {
     return client.findOneBySlug(options.slug)
   }
 
-  throw errMiddleware.badRequest()
+  throw errMiddleware.badRequest('users', 'utilisateur introuvable')
 }

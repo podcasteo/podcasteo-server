@@ -7,7 +7,7 @@ export default async (facebookId) => {
   })
 
   if (data.length < 1) {
-    throw errMiddleware.notFound(userAccessor.name)
+    throw errMiddleware.notFound(userAccessor.name, 'utilisateur introuvable')
   }
 
   return data[0]

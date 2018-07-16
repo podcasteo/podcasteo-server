@@ -22,7 +22,7 @@ export default async function updateProviderPodcast(data, context) {
   const user = authMiddleware.handleUser(context)
 
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('provider', 'provider introuvable')
   }
 
   data.createdAt = handleFirstDate(data.createdAt) // eslint-disable-line no-param-reassign

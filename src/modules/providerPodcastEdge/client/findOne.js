@@ -15,7 +15,7 @@ export default async (_toPodcastId, type, createdAt) => {
   })
 
   if (providerPodcastEdge.length < 1) {
-    throw errMiddleware.notFound(providerPodcastEdgeAccessor.name)
+    throw errMiddleware.notFound(providerPodcastEdgeAccessor.name, 'provider introuvable')
   } else {
     result = {
       ...providerPodcastEdge[0],
@@ -27,7 +27,7 @@ export default async (_toPodcastId, type, createdAt) => {
   })
 
   if (providerPodcast.length < 1) {
-    throw errMiddleware.notFound(providerPodcastAccessor.name)
+    throw errMiddleware.notFound(providerPodcastAccessor.name, 'provider introuvable')
   } else {
     result.data = providerPodcast[0] // eslint-disable-line prefer-destructuring
   }

@@ -34,7 +34,7 @@ export default async function deleteMemberPodcast(options, context) {
   if (options._from !== user.id) {
     if (!authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR) &&
         !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('memberPodcast', 'non autorisé')
     }
   }
 

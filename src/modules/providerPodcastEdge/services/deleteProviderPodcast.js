@@ -17,7 +17,7 @@ export default async function deleteProviderPodcast(options, context) {
   const user = authMiddleware.handleUser(context)
 
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('provider', 'provider introuvable')
   }
 
   options.createdAt = handleFirstDate(options.createdAt) // eslint-disable-line no-param-reassign

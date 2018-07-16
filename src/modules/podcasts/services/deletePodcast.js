@@ -25,7 +25,7 @@ export default async function deletePodcast(podcastId, context) {
 
   if (!authMiddleware.haveRole(membership, rolesMiddleware.SUPERADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('podcasts', 'non autorisé')
   }
 
   // delete podcast - memberEdge - likeEdge - groupEdge

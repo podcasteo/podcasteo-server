@@ -34,7 +34,7 @@ export default async function updateMemberPodcastRole(data, context) {
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
     if ((data.role === rolesMiddleware.SUPERADMINISTRATOR && !authMiddleware.haveRole(myMembership, rolesMiddleware.SUPERADMINISTRATOR)) ||
         (data.role === rolesMiddleware.ADMINISTRATOR && !authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR))) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('memberPodcast', 'non autorisé')
     }
   }
 

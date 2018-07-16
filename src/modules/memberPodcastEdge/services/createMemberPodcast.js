@@ -33,7 +33,7 @@ export default async function createMemberPodcast(data, context) {
 
   if (!authMiddleware.haveRole(myMembership, rolesMiddleware.ADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('memberPodcast', 'non autorisé')
   }
 
   const memberPodcast = {

@@ -7,7 +7,7 @@ export default async (id) => {
   })
 
   if (data.length < 1) {
-    throw errMiddleware.notFound(memberPodcastAccessor.name)
+    throw errMiddleware.notFound(memberPodcastAccessor.name, 'membre du podcast introuvable')
   }
 
   return data[0]

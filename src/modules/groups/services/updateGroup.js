@@ -24,7 +24,7 @@ export default async function updateGroup(groupId, data, context) {
 
   if (!authMiddleware.haveRole(membership, rolesMiddleware.ADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('groups', 'non autorisé')
   }
 
   await client.updateGroup(groupId, data)

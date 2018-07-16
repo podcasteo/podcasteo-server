@@ -23,7 +23,7 @@ export default async function deleteFollowUser(options, context) {
 
   if (options._from !== user.id) {
     if (!authMiddleware.haveRole(user, rolesMiddleware.ADMINISTRATOR)) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('follower', 'non autorisé')
     }
   }
 

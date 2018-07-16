@@ -24,7 +24,7 @@ export default async function updatePodcast(podcastId, data, context) {
 
   if (!authMiddleware.haveRole(membership, rolesMiddleware.ADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('podcasts', 'non autorisé')
   }
 
   await client.updatePodcast(podcastId, data)

@@ -7,7 +7,7 @@ export default async (id) => {
   })
 
   if (data.length < 1) {
-    throw errMiddleware.notFound(likePodcastAccessor.name)
+    throw errMiddleware.notFound(likePodcastAccessor.name, 'like introuvable')
   }
 
   return data[0]

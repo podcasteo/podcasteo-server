@@ -24,7 +24,7 @@ export default async function uploadAvatarFromGraphQL(podcastId, file, context) 
 
   if (!authMiddleware.haveRole(membership, rolesMiddleware.ADMINISTRATOR) &&
       !authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('podcasts', 'non autorisé')
   }
 
   const stream = file.buffer
@@ -41,6 +41,6 @@ export default async function uploadAvatarFromGraphQL(podcastId, file, context) 
   } catch (error) {
     console.log(error) // eslint-disable-line
 
-    throw errMiddleware.badRequest()
+    throw errMiddleware.badRequest('podcasts', "erreur au téléchargement de l'avatar")
   }
 }

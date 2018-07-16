@@ -28,7 +28,7 @@ export default async function updateRankingPodcast(data, context) {
   const user = authMiddleware.handleUser(context)
 
   if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('ranking', 'non autorisé')
   }
 
   data.createdAt = handleFirstDate(data.createdAt) // eslint-disable-line no-param-reassign

@@ -3,7 +3,7 @@ import rolesMiddleware from 'helpers/roles'
 
 function handleUser(req) {
   if (!req.user) {
-    throw errMiddleware.unauthorized()
+    throw errMiddleware.unauthorized('authentification', 'connexion invalide')
   }
 
   return req.user
@@ -31,7 +31,7 @@ function handleRole(role, req) {
   const user = handleUser(req)
 
   if (!haveRole(user, role)) {
-    throw errMiddleware.forbidden()
+    throw errMiddleware.forbidden('roles', 'non autorisé')
   }
 
   return user

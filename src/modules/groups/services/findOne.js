@@ -15,5 +15,5 @@ export default async function findOne(options) {
     return client.findOneBySlug(options.slug)
   }
 
-  throw errMiddleware.badRequest()
+  throw errMiddleware.badRequest('groups', 'groupe introuvable')
 }

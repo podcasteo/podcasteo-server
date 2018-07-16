@@ -23,7 +23,7 @@ export default async function deleteLikePodcast(options, context) {
 
   if (options._from !== user.id) {
     if (!authMiddleware.haveRole(user, rolesMiddleware.ADMINISTRATOR)) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('likePodcast', 'non autorisé')
     }
   }
 

@@ -14,7 +14,7 @@ export default async function updateUser(userId, data, context) {
 
   if (user.id !== userId) {
     if (!authMiddleware.haveRole(user, rolesMiddleware.SUPERADMINISTRATOR)) {
-      throw errMiddleware.forbidden()
+      throw errMiddleware.forbidden('users', 'non autorisé')
     }
   }
 
