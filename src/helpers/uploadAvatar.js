@@ -3,11 +3,11 @@ import path from 'path'
 import cloudinary from 'clients/cloudinary'
 import BufferStream from 'helpers/BufferStream'
 
-export default async (type, slug, stream) => {
+export default async (type, slug, stream, forceStream = false) => {
   const uri = path.join(type, slug, 'avatar', 'default')
   let buffer = null
 
-  if (typeof stream === 'object' && stream.constructor.name === 'FileStream') {
+  if (forceStream || (typeof stream === 'object' && stream.constructor.name === 'FileStream')) {
     buffer = stream
   } else {
     buffer = new BufferStream(stream)

@@ -33,12 +33,15 @@ export default async function handleFacebookUser(data) {
     await client.createUser(user)
 
     if (facebookAvatar) {
-      const stream = await fetch(facebookAvatar)
-
       try {
-        await uploadAvatar('users', user.slug, stream.body)
-      } catch (errorImg) {
-        console.log(errorImg) // eslint-disable-line
+        const imgData = await fetch(facebookAvatar)
+        const result = await uploadAvatar('users', user.slug, imgData.body, true)
+
+        await client.updateUser(user.id, {
+          avatar: result.url,
+        })
+      } catch (imgError) {
+        console.log(imgError) // eslint-disable-line
       }
     }
   }
