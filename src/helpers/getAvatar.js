@@ -3,5 +3,5 @@ export default (type, item) => {
     return item.avatar
   }
 
-  return `https://res.cloudinary.com/podcasteo/image/upload/v1/${type}/${item.slug}/avatar/default`
+  return `https://res.cloudinary.com/podcasteo/image/upload/v2/${type}/${item.slug}/avatar/default.jpg`
 }

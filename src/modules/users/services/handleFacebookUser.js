@@ -7,6 +7,7 @@ import uuidv4 from 'uuid/v4'
 import client from 'modules/users/client'
 import stringToSlug from 'helpers/stringToSlug'
 import uploadAvatar from 'helpers/uploadAvatar'
+import errMiddleware from 'helpers/errors'
 
 export default async function handleFacebookUser(data) {
   joi.assert(data, joi.object().keys({
@@ -30,19 +31,23 @@ export default async function handleFacebookUser(data) {
       user.slug = stringToSlug(user.username || `${user.firstname}.${user.lastname}`)
     }
 
-    await client.createUser(user)
+    try {
+      await client.createUser(user)
 
-    if (facebookAvatar) {
-      try {
-        const imgData = await fetch(facebookAvatar)
-        const result = await uploadAvatar('users', user.slug, imgData.body, true)
+      if (facebookAvatar) {
+        try {
+          const imgData = await fetch(facebookAvatar)
+          const result = await uploadAvatar('users', user.slug, imgData.body, true)
 
-        await client.updateUser(user.id, {
-          avatar: result.url,
-        })
-      } catch (imgError) {
-        console.log(imgError) // eslint-disable-line
+          await client.updateUser(user.id, {
+            avatar: result.url,
+          })
+        } catch (imgError) {
+          console.log(imgError) // eslint-disable-line
+        }
       }
+    } catch (userError) {
+      throw errMiddleware.badRequest('users', "Le pseudo ou l'email sont déjà pris.")
     }
   }
 
